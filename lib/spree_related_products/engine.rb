@@ -4,7 +4,8 @@ module SpreeRelatedProducts
     isolate_namespace Spree
     engine_name 'spree_related_products'
 
-    config.autoload_paths += %W(#{config.root}/lib #{config.root}/app/models/spree/calculator)
+    config.autoload_paths += %W(#{config.root}/lib)
+    config.autoload_once_paths << "#{root}/app/models/spree/calculator"
 
     initializer 'spree.promo.register.promotion.calculators' do |app|
       app.config.spree.calculators.promotion_actions_create_adjustments << Spree::Calculator::RelatedProductDiscount
