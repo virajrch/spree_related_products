@@ -1,6 +1,6 @@
 module Spree
   module Api
-    class RelationsController < Spree::Api::v1::BaseController
+    class RelationsController < Spree::Api::V1::BaseController
       include ActionController::MimeResponds
 
       before_action :load_data, only: [:create, :destroy]
