@@ -4,5 +4,5 @@ Deface::Override.new(
   insert_bottom: '[data-hook="admin_product_sub_tabs"]',
   text: '<%= tab :relation_types, label: plural_resource_name(Spree::RelationType) %>'
 )
-module AddProductRelationAdminSubMenu
+module AddProductRelationAdminSubMenuTab
 end
