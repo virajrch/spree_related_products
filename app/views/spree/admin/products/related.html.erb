@@ -40,11 +40,17 @@
             <%= select_tag :add_type, options_for_select(@relation_types.map { |rt| [rt.name, rt.id] }), class: 'select2' %>
           </div>
         </div>
-        <div id="related_product_discount" class="col-md-5 col-xl-3">
+        <div id="related_product_quantity" class="col-md-7 col-xl-1">
+          <div class="form-group">
+            <%= label_tag :add_quantity, Spree.t(:quantity) %>
+            <%= text_field_tag :add_quantity, nil, placeholder: 'Optional', class: 'form-control' %>
+          </div>
+        </div>
+        <div id="related_product_discount" class="col-md-5 col-xl-2">
           <div class="form-group">
             <%= label_tag :add_discount, Spree.t(:discount_amount) %>
             <div class="input-group">
-              <%= text_field_tag :add_discount, 0.0, class: 'form-control text-center' %>
+              <%= text_field_tag :add_discount, 0.0, class: 'form-control' %>
               <span class="input-group-btn">
                 <%= button_link_to Spree.t(:add), admin_product_relations_url(@product), icon: 'add', class: 'btn-success my-0', id: 'add_related_product', data: { update: 'products-table-wrapper' } %>
               </span>
@@ -74,7 +80,8 @@
             'relation[related_to_type]' : 'Product',
             'relation[related_to_id]': $('#add_variant_name').val(),
             'relation[relation_type_id]': $('#add_type').val(),
-            'relation[discount_amount]' : $('#add_discount').val()
+            'relation[discount_amount]' : $('#add_discount').val(),
+            'relation[quantity]' : $('#add_quantity').val()
           }
         });
         return false;

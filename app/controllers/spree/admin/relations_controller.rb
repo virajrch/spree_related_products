@@ -17,6 +17,7 @@ module Spree
       def update
         @relation = Relation.find(params[:id])
         @relation.update_attribute :discount_amount, relation_params[:discount_amount] || 0
+        @relation.update_attribute :quantity, relation_params[:quantity] || nil
 
         redirect_to(related_admin_product_url(@relation.relatable))
       end
@@ -64,7 +65,8 @@ module Spree
           :discount_amount,
           :relation_type_id,
           :related_to_type,
-          :position
+          :position,
+          :quantity
         ]
       end
 
