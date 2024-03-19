@@ -1,14 +1,21 @@
 module Spree
   module Admin
     class RelationsController < BaseController
-      before_action :load_data, only: [:create, :destroy]
+      before_action :load_data, only:  [:create] # [:create, :destroy]
 
       respond_to :js, :html
 
       def create
         @relation = Relation.new(relation_params)
-        @relation.relatable = @product
-        @relation.related_to = Spree::Variant.find(relation_params[:related_to_id]).product
+        if @relation_type.applies_to == "Spree::Product"
+          @relation.relatable = @product
+          @relation.related_to = Spree::Variant.find(relation_params[:related_to_id]).product
+        else
+          @relation.relatable = @variant
+          @relation.related_to = Spree::Variant.find(relation_params[:related_to_id])
+        end
+        @relation.related_to_type = @relation_type.applies_to
+        @relation.relatable_type = @relation_type.applies_to
         @relation.save
 
         respond_with(@relation)
@@ -62,6 +69,7 @@ module Spree
           :relation_type,
           :relatable,
           :related_to_id,
+          :relatable_id,
           :discount_amount,
           :relation_type_id,
           :related_to_type,
@@ -72,6 +80,8 @@ module Spree
 
       def load_data
         @product = Spree::Product.friendly.find(params[:product_id])
+        @relation_type = Spree::RelationType.find(relation_params[:relation_type_id].to_i)
+        @variant = Spree::Variant.find(relation_params[:relatable_id].to_i)
       end
 
       def model_class

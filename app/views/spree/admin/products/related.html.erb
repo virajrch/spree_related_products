@@ -24,7 +24,13 @@
     <fieldset>
       <legend><%= Spree.t(:add_related_product) %></legend>
       <div class="row">
-        <div id="related_product_name" class="col-md-12 col-xl-5">
+        <div id="relatable_variant" class="col-md-12 col-xl-3">
+          <div class="form-group">
+            <%= label_tag :add_relatable_variant_name, Spree.t(:select_variant) %>
+            <%= select_tag :add_relatable_variant_name, options_for_select(@product.variants_including_master.map { |v| [(v.options_text.present? ? v.options_text : v.name), v.id] }), class: 'select2' %>
+          </div>
+        </div>
+        <div id="related_product_name" class="col-md-12 col-xl-4">
           <div class="form-group">
             <%= label_tag :add_variant_name, Spree.t(:name_or_sku_short) %>
             <% if Spree.version.to_d >= 4.2 %>
@@ -34,7 +40,7 @@
             <% end %>
           </div>
         </div>
-        <div id="related_product_type" class="col-md-7 col-xl-4">
+        <div id="related_product_type" class="col-md-7 col-xl-2">
           <div class="form-group">
             <%= label_tag :add_type, Spree.t(:type) %>
             <%= select_tag :add_type, options_for_select(@relation_types.map { |rt| [rt.name, rt.id] }), class: 'select2' %>
@@ -63,6 +69,8 @@
 
   <div id="products-table-wrapper">
     <%= render 'related_products_table', product: @product %>
+    <hr>
+    <%= render 'related_variants_table', variants: @product.variants_including_master %>
   </div>
 
   <%= content_for :head do %>
@@ -77,8 +85,8 @@
           url: this.href,
           type: 'POST',
           data: {
-            'relation[related_to_type]' : 'Product',
             'relation[related_to_id]': $('#add_variant_name').val(),
+            'relation[relatable_id]': $('#add_relatable_variant_name').val(),
             'relation[relation_type_id]': $('#add_type').val(),
             'relation[discount_amount]' : $('#add_discount').val(),
             'relation[quantity]' : $('#add_quantity').val()

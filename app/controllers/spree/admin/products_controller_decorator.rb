@@ -1,7 +1,7 @@
 module Spree::Admin::ProductsControllerDecorator
   def related
     load_resource
-    @relation_types = Spree::Product.relation_types
+    @relation_types = Spree::RelationType.where(applies_to: ['Spree::Product', 'Spree::Variant']).order(:name) #Spree::Product.relation_types
   end
 end
 
