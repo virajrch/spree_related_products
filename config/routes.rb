@@ -9,11 +9,25 @@ Spree::Core::Engine.add_routes do
         end
       end
     end
+    resources :variants, only: [] do
+      resources :relations do
+        collection do
+          post :update_positions
+        end
+      end
+    end
   end
 
   namespace :api, defaults: { format: 'json' } do
     resources :products, only: [] do
       get :related, on: :member
+      resources :relations do
+        collection do
+          post :update_positions
+        end
+      end
+    end
+    resources :variants, only: [] do
       resources :relations do
         collection do
           post :update_positions
