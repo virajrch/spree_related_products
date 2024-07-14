@@ -97,7 +97,8 @@ module Spree
       result = result.merge(self.class.relation_filter) if relation_filter
 
       # make sure results are in same order as related_ids array (position order)
-      result.where(id: related_ids).order(:position) if result.present?
+      #result.where(id: related_ids).order(:position) if result.present?
+      result = result.order(Arel.sql("position(id::text in '#{related_ids.map{|r| r.related_to_id}.join(',')}')")) if result.present?
 
       result
     end
